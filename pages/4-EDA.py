@@ -199,7 +199,7 @@ def main() -> None:
                 st.plotly_chart(fig, use_container_width=True)
     if project.is_step_completed("cleaning"):
         if st.button("Siguiente: Entrenamiento"):
-            st.switch_page("pages/5-Training.py")
+            st.switch_page("pages/5-Entrenamiento.py")
 
 
 if __name__ == "__main__":

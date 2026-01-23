@@ -366,7 +366,7 @@ def main() -> None:
                 st.success(f"Configuración guardada en {path}")
     with cols[0]:
         if st.button("¡PRUEBA TU MODELO!"):
-            st.switch_page("pages/7-Prediction.py")
+            st.switch_page("pages/7-Predicciones.py")
 
 
 if __name__ == "__main__":

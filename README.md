@@ -200,14 +200,5 @@ MIT
 
 ---
 
-## 👤 Autor
-
-Desarrollado como proyecto de portfolio para demostrar habilidades en:
-- Ingeniería de datos y Machine Learning
-- Desarrollo de aplicaciones web con Python
-- Arquitectura de software y buenas prácticas
-- Testing y documentación
-
----
 
 *Si este proyecto te resulta útil para aprender ML, ¡dale una ⭐ en GitHub!*

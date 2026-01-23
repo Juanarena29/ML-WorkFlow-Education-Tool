@@ -1,0 +1,17 @@
+# =============================================================================
+# ML WorkFlow - Requirements
+# =============================================================================
+# Core
+streamlit>=1.30.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+xgboost>=2.0.0
+
+# Visualization
+plotly>=5.18.0
+
+# Utilities
+joblib>=1.3.0

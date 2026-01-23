@@ -63,7 +63,7 @@ def main() -> None:
         with st.expander("📦 ¿Qué es un dataset?"):
             st.markdown(
                 "Un **dataset** es una tabla de datos donde cada fila representa un algo (por ejemplo, una casa) y cada columna una característica de ese algo (precio, metros cuadrados, ubicación, etc.).\n\n"
-                "En esta app los datasets se cargan en formato **CSV**, un tipo de archivo sencillo que puede abrirse y editarse con Excel, Google Sheets u otras herramientas similares."
+                "En esta app los datasets se cargan en formato **CSV**, un tipo de archivo sencillo que puede abrirse y editarse con Excel, Google Sheets u otras herramientas similares. \n\n"
                 "En el modo **EDUCACIÓN** se incluye un **dataset de ejemplo** para que puedas recorrer todo el flujo sin necesidad de subir datos propios."
             )
 

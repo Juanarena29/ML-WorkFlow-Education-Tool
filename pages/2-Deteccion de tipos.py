@@ -222,7 +222,7 @@ def main() -> None:
 
     if project.is_step_completed("types"):
         if st.button("Siguiente: Tratamiento de Datos"):
-            st.switch_page("pages/3-CleaningConfig.py")
+            st.switch_page("pages/3-Limpieza de datos.py")
 
 
 if __name__ == "__main__":

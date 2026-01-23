@@ -198,7 +198,7 @@ def main() -> None:
 
     if project.is_step_completed("training"):
         if st.button("Siguiente: Resultados"):
-            st.switch_page("pages/6-Results.py")
+            st.switch_page("pages/6-Resultados.py")
 
 
 if __name__ == "__main__":

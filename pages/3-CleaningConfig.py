@@ -90,9 +90,11 @@ def main() -> None:
     if learn:
         with st.expander("📌 ¿Qué estamos haciendo en esta etapa?"):
             st.markdown(
-                "En este paso vas a **limpiar y preparar** el dataset antes de entrenar modelos.\n\n"
-                "Acá definís qué hacer con **valores faltantes (NaNs)** y **filas duplicadas**.\n\n"
-                "Una buena limpieza suele mejorar la calidad del entrenamiento y evita errores más adelante."
+                "En esta etapa vas a **analizar y preparar** el dataset antes de entrenar modelos.\n\n"
+                "Acá se muestra información clave como la **cantidad de valores faltantes (NaNs)** por columna, "
+                "la presencia de **filas duplicadas** y algunas **sugerencias automáticas** para tratarlos.\n\n"
+                "Este paso funciona como un **análisis exploratorio inicial**: te ayuda a entender los problemas del dataset "
+                "y a decidir cómo limpiarlo antes de realizar un EDA más completo y entrenar modelos."
             )
     else:
         st.write("Define como tratar valores faltantes y duplicados.")

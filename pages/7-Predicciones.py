@@ -101,7 +101,7 @@ def main() -> None:
             st.markdown(
                 "En esta página vas a usar un **modelo ya entrenado** para generar predicciones sobre **datos nuevos**.\n\n"
                 "Podés subir un CSV con nuevas filas y la app calculará el valor predicho para cada una. "
-                "Si además incluís el **target real**, también vas a ver un gráfico comparando **real vs predicho**."
+                "Si además incluís el **target real**, también vas a ver un gráfico comparando **real vs predicho**. \n\n"
                 "No te preocupes, en el modo **EDUCACIÓN** se incluye un dataset de prueba por defecto para que veas los resultados"
             )
 

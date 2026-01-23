@@ -64,6 +64,7 @@ def main() -> None:
             st.markdown(
                 "Un **dataset** es una tabla de datos donde cada fila representa un algo (por ejemplo, una casa) y cada columna una característica de ese algo (precio, metros cuadrados, ubicación, etc.).\n\n"
                 "En esta app los datasets se cargan en formato **CSV**, un tipo de archivo sencillo que puede abrirse y editarse con Excel, Google Sheets u otras herramientas similares."
+                "En el modo **EDUCACIÓN** se incluye un **dataset de ejemplo** para que puedas recorrer todo el flujo sin necesidad de subir datos propios."
             )
 
     uploaded_file = st.file_uploader("Selecciona un CSV", type=["csv"])

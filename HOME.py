@@ -3,7 +3,7 @@ from src.utils.session import initialize_session, get_project
 
 
 st.set_page_config(
-    page_title="ML WorkFlow (for dummies)",
+    page_title="ML WorkFlow Education",
     layout="wide"
 )
 

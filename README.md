@@ -75,7 +75,7 @@ Sin explicaciones adicionales, flujo directo al resultado.
 ```bash
 # Clonar el repositorio
 git clone https://github.com/Juanarena29/ML-WorkFlow-Education-Tool.git
-cd ml-workflow
+cd ML-WorkFlow-Education-Tool
 
 # Crear entorno virtual
 python -m venv venv
@@ -98,7 +98,7 @@ streamlit run HOME.py
 ## 📂 Estructura del proyecto
 
 ```
-ml-workflow/
+ML-WorkFlow-Education-Tool/
 ├── HOME.py                 # Página principal
 ├── pages/                  # Páginas del flujo
 │   ├── 1-LoadDataset.py

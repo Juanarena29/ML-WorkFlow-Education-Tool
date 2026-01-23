@@ -228,7 +228,7 @@ def main() -> None:
 
     if project.is_step_completed("load"):
         if st.button("Siguiente: Detección de Tipos"):
-            st.switch_page("pages/2-Detección de tipos.py")
+            st.switch_page("pages/2-Deteccion de tipos.py")
 
 
 if __name__ == "__main__":

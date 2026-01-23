@@ -19,7 +19,7 @@ def main() -> None:
     if not project.home_completed:
         cols = st.columns(5)
         with cols[1]:
-            if st.button("Modo APRENDER"):
+            if st.button("Modo EDUCACION"):
                 project.ui_mode = "learn"
                 project.home_completed = True
                 st.rerun()

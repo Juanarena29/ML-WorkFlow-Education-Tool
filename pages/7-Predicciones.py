@@ -97,12 +97,12 @@ def main() -> None:
     st.title("Prediccion")
 
     if learn:
-    with st.expander("📌 ¿Qué hacemos en esta etapa?"):
-        st.markdown(
-            "En esta página vas a usar un **modelo ya entrenado** para generar predicciones sobre **datos nuevos**.\n\n"
-            "Podés subir un CSV con nuevas filas y la app calculará el valor predicho para cada una. "
-            "Si además incluís el **target real**, también vas a ver un gráfico comparando **real vs predicho**."
-        )
+        with st.expander("📌 ¿Qué hacemos en esta etapa?"):
+            st.markdown(
+                "En esta página vas a usar un **modelo ya entrenado** para generar predicciones sobre **datos nuevos**.\n\n"
+                "Podés subir un CSV con nuevas filas y la app calculará el valor predicho para cada una. "
+                "Si además incluís el **target real**, también vas a ver un gráfico comparando **real vs predicho**."
+            )
 
     feature_cols = project.get_feature_columns()
     if not feature_cols:
@@ -110,13 +110,13 @@ def main() -> None:
         return
 
     if learn:
-    with st.expander("🧠 ¿Qué modelo se usa para predecir?"):
-        st.markdown(
-            "Para hacer predicciones necesitás un **modelo entrenado**.\n\n"
-            "- Podés usar un modelo que entrenaste recién en esta app (queda disponible en la sesión).\n"
-            "- O podés **cargar un modelo guardado** (por ejemplo un `.pkl/.joblib`) para reutilizarlo.\n\n"
-            "La recomendación es usar un modelo entrenado con datos similares a los que vas a predecir."
-        )
+        with st.expander("🧠 ¿Qué modelo se usa para predecir?"):
+            st.markdown(
+                "Para hacer predicciones necesitás un **modelo entrenado**.\n\n"
+                "- Podés usar un modelo que entrenaste recién en esta app (queda disponible en la sesión).\n"
+                "- O podés **cargar un modelo guardado** (por ejemplo un `.pkl/.joblib`) para reutilizarlo.\n\n"
+                "La recomendación es usar un modelo entrenado con datos similares a los que vas a predecir."
+            )
 
     model, model_name = _select_model(project)
 
@@ -125,16 +125,16 @@ def main() -> None:
         "Sube un CSV con filas nuevas", type=["csv"])
 
     if learn:
-    with st.expander("📄 ¿Cómo debe ser el CSV de entrada?"):
-        st.markdown(
-            "El archivo debe tener **las mismas columnas features** que se usaron para entrenar el modelo.\n\n"
-            "Tenés dos formas de usar esta página:\n"
-            "1. **Sin target**: subís solo las features y la app **solo predice**.\n"
-            "2. **Con target**: subís las features **y también** la columna target real. "
-            "Además de predecir, la app muestra un gráfico comparando **predicción vs valor real** "
-            "(o matriz de confusión en clasificación).\n\n"
-            "Si faltan columnas requeridas, la app te avisará antes de predecir."
-        )
+        with st.expander("📄 ¿Cómo debe ser el CSV de entrada?"):
+            st.markdown(
+                "El archivo debe tener **las mismas columnas features** que se usaron para entrenar el modelo.\n\n"
+                "Tenés dos formas de usar esta página:\n"
+                "1. **Sin target**: subís solo las features y la app **solo predice**.\n"
+                "2. **Con target**: subís las features **y también** la columna target real. "
+                "Además de predecir, la app muestra un gráfico comparando **predicción vs valor real** "
+                "(o matriz de confusión en clasificación).\n\n"
+                "Si faltan columnas requeridas, la app te avisará antes de predecir."
+            )
 
     if uploaded_file is None:
         return

@@ -221,7 +221,7 @@ def main() -> None:
         st.success("Tipos y target confirmados.")
 
     if project.is_step_completed("types"):
-        if st.button("Siguiente: Tratamiento de Datos"):
+        if st.button("Siguiente: Limpieza de Datos"):
             st.switch_page("pages/3-Limpieza de datos.py")
 
 

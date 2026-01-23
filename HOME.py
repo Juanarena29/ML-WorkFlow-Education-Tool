@@ -89,7 +89,7 @@ def main() -> None:
 
     if project.is_step_completed("home"):
         if st.button("EMPEZAR RECORRIDO"):
-            st.switch_page("pages/1-Carga De Dataset.py")
+            st.switch_page("pages/1-Carga de Dataset.py")
         st.markdown("""
         Si deseas cambiar de modo, intenta recargando la página.
         """)

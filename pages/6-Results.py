@@ -263,14 +263,6 @@ def main() -> None:
     for model_name, pipeline in project.trained_models.items():
         with st.expander(f"{model_name} - gráficos"):
             # Predicción con fallback controlado
-            if learn:
-                with st.expander("📊 ¿Para qué sirven los gráficos por modelo?"):
-                    st.markdown(
-                        "Los gráficos ayudan a ver el comportamiento real del modelo, no solo un número.\n\n"
-                        "- En **clasificación**, muestran qué clases se confunden entre sí.\n"
-                        "- En **regresión**, muestran qué tan lejos están las predicciones de los valores reales.\n\n"
-                        "Si dos modelos tienen métricas parecidas, los gráficos suelen ayudarte a decidir mejor."
-                    )
             try:
                 y_pred = pipeline.predict(X_test)
             except (ValueError, TypeError) as exc:

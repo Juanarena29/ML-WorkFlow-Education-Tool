@@ -58,10 +58,10 @@ class TestRuntimeModeDetection:
         from src.utils.constants import RUNTIME_MODE
 
         assert isinstance(RUNTIME_MODE, str)
-        assert RUNTIME_MODE in ("cloud", "local")
+        assert RUNTIME_MODE in ("demo", "full")
 
-    def test_is_cloud_is_boolean(self):
-        """IS_CLOUD es un booleano."""
-        from src.utils.constants import IS_CLOUD
+    def test_is_demo_is_boolean(self):
+        """IS_DEMO es un booleano."""
+        from src.utils.constants import IS_DEMO
 
-        assert isinstance(IS_CLOUD, bool)
+        assert isinstance(IS_DEMO, bool)

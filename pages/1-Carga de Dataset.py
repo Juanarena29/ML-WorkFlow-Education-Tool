@@ -1,3 +1,5 @@
+from pathlib import Path
+import pandas as pd
 import streamlit as st
 
 from src.data.loader import (
@@ -7,7 +9,7 @@ from src.data.loader import (
     load_and_validate,
     truncate_dataset_if_needed,
 )
-from src.utils.constants import IS_CLOUD, CLOUD_MAX_ROWS, CLOUD_MAX_COLUMNS
+from src.utils.constants import CLOUD_MAX_ROWS, CLOUD_MAX_COLUMNS
 from src.utils.session import (
     add_operation_log,
     get_project,
@@ -68,6 +70,26 @@ def main() -> None:
             )
 
     uploaded_file = st.file_uploader("Selecciona un CSV", type=["csv"])
+    if learn and uploaded_file is None and project.df_original is None:
+        sample_path = Path(__file__).resolve().parents[1] / "DatosEDUCATOR.csv"
+        if sample_path.exists():
+            try:
+                df_sample = pd.read_csv(sample_path)
+            except Exception as exc:
+                st.error(f"No se pudo cargar el dataset de ejemplo: {exc}")
+            else:
+                project.df_original = df_sample
+                project.update_metadata()
+                add_operation_log(
+                    "load_dataset",
+                    "Dataset de ejemplo cargado en modo learn.",
+                    status="success",
+                )
+                st.info(
+                    "Dataset de ejemplo cargado automáticamente (modo educación.")
+        else:
+            st.warning(
+                "No se encontró el dataset de ejemplo DatosEDUCATOR.csv.")
 
     # Caso: no subió nada pero ya existe un dataset cargado en sesión/proyecto
     if uploaded_file is None and project.df_original is not None:
@@ -107,6 +129,9 @@ def main() -> None:
             "Una vista previa del dataset ayuda a comprender su estructura y el tipo de datos disponibles."
         )
         st.dataframe(df_loaded.head(50), use_container_width=True)
+        if project.is_step_completed("load"):
+            if st.button("Siguiente: Detección de Tipos"):
+                st.switch_page("pages/2-Deteccion de tipos.py")
         return
 
     # Caso: todavía no subió archivo
@@ -132,9 +157,9 @@ def main() -> None:
     for msg in truncate_messages:
         st.warning(msg)
 
-    if IS_CLOUD:
+    if project.runtime_mode == "demo":
         st.caption(
-            f"ℹ️ Modo cloud: límite de {CLOUD_MAX_ROWS:,} filas y {CLOUD_MAX_COLUMNS} columnas."
+            f"ℹ️ Modo demo: límite de {CLOUD_MAX_ROWS:,} filas y {CLOUD_MAX_COLUMNS} columnas."
         )
 
     # Detectar columnas completamente vacías y permitir eliminarlas

@@ -12,7 +12,7 @@ import pandas as pd
 import streamlit as st
 
 from src.data.validator import validate_dataset
-from src.utils.constants import IS_CLOUD, get_max_rows, get_max_columns
+from src.utils.constants import IS_DEMO, get_max_rows, get_max_columns
 
 
 def truncate_dataset_if_needed(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[str]]:
@@ -33,7 +33,7 @@ def truncate_dataset_if_needed(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[str
     if df is None or df.empty:
         return df, messages
 
-    if not IS_CLOUD:
+    if not IS_DEMO:
         return df, messages
 
     max_rows = get_max_rows()

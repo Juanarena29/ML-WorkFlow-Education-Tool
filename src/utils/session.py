@@ -12,6 +12,7 @@ from datetime import datetime
 import pandas as pd
 import streamlit as st
 
+from src.utils.constants import RUNTIME_MODE
 
 @dataclass
 class MLProject:
@@ -238,7 +239,7 @@ def initialize_session() -> None:
     - logs de operaciones
     """
     if 'project' not in st.session_state:
-        st.session_state.project = MLProject()
+        st.session_state.project = MLProject(runtime_mode=RUNTIME_MODE)
 
     if 'ui_mode' not in st.session_state:
         st.session_state.ui_mode = None
@@ -266,13 +267,21 @@ def reset_project(keep_metadata: bool = False) -> None:
         keep_metadata: Si es True, conserva el nombre del proyecto anterior.
     """
     old_metadata = None
+    old_ui_mode = None
+    old_home_completed = None
     if keep_metadata and 'project' in st.session_state:
         old_metadata = st.session_state.project.metadata.copy()
+        old_ui_mode = st.session_state.project.ui_mode
+        old_home_completed = st.session_state.project.home_completed
 
-    st.session_state.project = MLProject()
+    st.session_state.project = MLProject(runtime_mode=RUNTIME_MODE)
     if old_metadata:
         st.session_state.project.metadata['project_name'] = old_metadata.get(
             'project_name', 'Untitled Project')
+    if old_ui_mode:
+        st.session_state.project.ui_mode = old_ui_mode
+    if old_home_completed is not None:
+        st.session_state.project.home_completed = old_home_completed
 
     st.session_state.confirmations = {
         'types_confirmed': False,

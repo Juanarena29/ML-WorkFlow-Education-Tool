@@ -97,7 +97,7 @@ class TestTruncateDatasetIfNeeded:
         """No trunca en modo local."""
         df = pd.DataFrame({"col": range(50000)})
 
-        with patch("src.data.loader.IS_CLOUD", False):
+        with patch("src.data.loader.IS_DEMO", False):
             result, messages = truncate_dataset_if_needed(df)
 
         assert len(result) == 50000
@@ -107,7 +107,7 @@ class TestTruncateDatasetIfNeeded:
         """Trunca filas en modo cloud."""
         df = pd.DataFrame({"col": range(30000)})
 
-        with patch("src.data.loader.IS_CLOUD", True):
+        with patch("src.data.loader.IS_DEMO", True):
             with patch("src.data.loader.get_max_rows", return_value=20000):
                 with patch("src.data.loader.get_max_columns", return_value=100):
                     result, messages = truncate_dataset_if_needed(df)
@@ -120,7 +120,7 @@ class TestTruncateDatasetIfNeeded:
         """Trunca columnas en modo cloud."""
         df = pd.DataFrame({f"col{i}": [1, 2, 3] for i in range(150)})
 
-        with patch("src.data.loader.IS_CLOUD", True):
+        with patch("src.data.loader.IS_DEMO", True):
             with patch("src.data.loader.get_max_rows", return_value=20000):
                 with patch("src.data.loader.get_max_columns", return_value=100):
                     result, messages = truncate_dataset_if_needed(df)
@@ -133,7 +133,7 @@ class TestTruncateDatasetIfNeeded:
         """Trunca filas y columnas si ambos exceden."""
         df = pd.DataFrame({f"col{i}": range(30000) for i in range(150)})
 
-        with patch("src.data.loader.IS_CLOUD", True):
+        with patch("src.data.loader.IS_DEMO", True):
             with patch("src.data.loader.get_max_rows", return_value=20000):
                 with patch("src.data.loader.get_max_columns", return_value=100):
                     result, messages = truncate_dataset_if_needed(df)

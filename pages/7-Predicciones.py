@@ -1,3 +1,4 @@
+from pathlib import Path
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -134,24 +135,48 @@ def main() -> None:
                 "2. **Con target**: subís las features **y también** la columna target real. "
                 "Además de predecir, la app muestra un gráfico comparando **predicción vs valor real** "
                 "(o matriz de confusión en clasificación).\n\n"
-                "Si faltan columnas requeridas, la app te avisará antes de predecir."
+                "Si faltan columnas requeridas, la app te avisará antes de predecir. \n\n"
+                "Los datos de prueba brindados poseen la columna **Target**, con el fin de ver cuanto un modelo puede acertar o fallar su prediccion."
             )
 
+    df = None
     if uploaded_file is None:
-        return
-
-    try:
-        df = load_dataset(uploaded_file)
-    except ValueError as exc:
-        add_operation_log("load_dataset_prediction", str(exc), status="error")
-        st.error(str(exc))
-        return
+        if learn:
+            sample_path = Path(__file__).resolve(
+            ).parents[1] / "TestEDUCATOR.csv"
+            if sample_path.exists():
+                try:
+                    df = pd.read_csv(sample_path)
+                except Exception as exc:
+                    add_operation_log(
+                        "load_dataset_prediction",
+                        str(exc),
+                        status="error",
+                    )
+                    st.error(f"No se pudo cargar el dataset de ejemplo: {exc}")
+                    return
+                st.info(
+                    "Dataset de predicción de ejemplo cargado automáticamente (modo learn).")
+            else:
+                st.warning(
+                    "No se encontró el dataset de ejemplo TestEDUCATOR.csv.")
+                return
+        else:
+            return
+    else:
+        try:
+            df = load_dataset(uploaded_file)
+        except ValueError as exc:
+            add_operation_log("load_dataset_prediction",
+                              str(exc), status="error")
+            st.error(str(exc))
+            return
 
     st.dataframe(df.head(50), use_container_width=True)
 
     has_target = st.checkbox(
         "El archivo posee el dato a predecir (target)",
-        value=False,
+        value=True,
     )
     y_true = None
     if has_target:

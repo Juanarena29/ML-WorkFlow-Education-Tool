@@ -152,6 +152,7 @@ def main() -> None:
                 'El **target** (u **objetivo**) es la columna que indica **qué queremos que el modelo prediga.** \n\n'
                 'Es el valor que el modelo intenta aprender a partir del resto de los datos. \n\n'
                 'Por ejemplo, en un dataset inmobiliario, lo más lógico es que el target sea el **precio** de la propiedad.'
+                'Para nuestro ejemplo, el target será **es_caro**, entrenaremos al modelo para que prediga si una propiedad debería ser cara o barata.'
             )
 
     st.subheader("Elija el tipo de problema (REGRESIÓN o CLASIFICACIÓN)")

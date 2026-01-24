@@ -1,0 +1,16 @@
+﻿es_caro,superficie,dormitorios,banios,pisos,via_principal,habitacion_invitados,sotano,calefaccion_agua,aire_acondicionado,estacionamientos,zona_preferencial,estado_amueblado
+caro,7800,3,2,2,si,no,no,no,no,0,si,semi_amueblado
+caro,6000,4,1,2,si,no,si,no,no,2,no,semi_amueblado
+caro,6600,4,2,2,si,si,si,no,si,1,si,sin_amoblar
+caro,8500,3,2,4,si,no,no,no,si,2,no,amueblada
+caro,4600,3,2,2,si,si,no,no,si,2,no,amueblada
+caro,6420,3,2,2,si,no,no,no,si,1,si,semi_amueblado
+barato,3180,2,2,1,si,no,si,no,no,2,no,semi_amueblado
+barato,7152,3,1,2,si,no,no,no,si,0,no,amueblada
+barato,4080,2,1,1,si,no,no,no,no,0,no,semi_amueblado
+barato,3850,2,1,1,si,no,no,no,no,0,no,semi_amueblado
+barato,2015,3,1,2,si,no,si,no,no,0,si,semi_amueblado
+barato,2176,2,1,2,si,si,no,no,no,0,si,semi_amueblado
+barato,3350,3,1,2,si,no,no,no,no,0,no,sin_amoblar
+caro,2400,2,1,2,si,si,no,no,si,0,si,semi_amueblado
+caro,3600,3,1,2,si,no,no,no,no,0,no,semi_amueblado

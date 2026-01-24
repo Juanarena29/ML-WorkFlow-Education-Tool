@@ -65,7 +65,7 @@ def main() -> None:
         En *Machine Learning* usamos esos ejemplos del pasado para entrenar un **sistema que aprende patrones** y luego puede **estimar el precio de una casa nueva**, incluso si nunca la vio antes.
 
         A este tipo de sistema lo llamamos **modelo predictivo**:  
-        una herramienta que aprende a partir de datos para hacer predicciones lo más cercanas posible a la realidad.
+        una herramienta que aprende a partir de datos, cualquiera sea el índole, para hacer predicciones lo más cercanas posible a la realidad.
 
         ---
 
@@ -83,6 +83,8 @@ def main() -> None:
         No necesitas saber Machine Learning de antemano:  
         la app te va a explicar **qué se hace, por qué se hace y qué decisiones estás tomando** en cada paso.
 
+        Usaremos un conjunto de datos precargado con el fin de entrenar un modelo que prediga si una **casa** es cara o barata, segun sus características.
+                    
         👉 **Cuando estés listo, podés comenzar el recorrido.**  
 
         """)

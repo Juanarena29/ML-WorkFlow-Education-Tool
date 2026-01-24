@@ -155,7 +155,7 @@ def _plot_confusion_matrix_normalized(y_true, y_pred) -> None:
     st.plotly_chart(fig, use_container_width=True)
 
 
-def _plot_residuals(y_true, y_pred) -> None:
+def _plot_residuals(y_true, y_pred, learn: bool) -> None:
     residuals = compute_residuals(y_true, y_pred)
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=y_pred, y=residuals, mode="markers"))
@@ -166,6 +166,14 @@ def _plot_residuals(y_true, y_pred) -> None:
         xaxis=dict(tickformat=",.2f"),
         yaxis=dict(tickformat=",.2f"),
     )
+    if learn:
+        with st.expander("📉 ¿Qué es un gráfico de residuos?"):
+            st.markdown(
+                "Un **gráfico de residuos** muestra la diferencia entre el valor real y el valor predicho.\n\n"
+                "- Si los puntos se agrupan cerca de **0**, el modelo predice bien.\n"
+                "- Si hay un patrón claro (curva o tendencia), puede indicar que el modelo no captura bien la relación.\n\n"
+                "Sirve para detectar errores sistemáticos y entender dónde el modelo falla."
+            )
     st.plotly_chart(fig, use_container_width=True)
 
 
@@ -344,7 +352,7 @@ def main() -> None:
                     st.info(
                         f"No se pudo generar la curva ROC para {model_name}: {exc}")
             else:
-                _plot_residuals(y_test, y_pred)
+                _plot_residuals(y_test, y_pred, learn)
 
     _render_model_details(project.trained_models,
                           project.metrics, project, learn)

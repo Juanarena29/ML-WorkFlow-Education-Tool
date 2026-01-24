@@ -2,7 +2,7 @@ import streamlit as st
 
 from src.ml.model_trainer import train_models
 from src.ml.models_config import get_models_for_problem_type, get_param_grids
-from src.utils.constants import IS_CLOUD, get_max_cv_folds
+from src.utils.constants import get_max_cv_folds
 from src.utils.session import (
     add_operation_log,
     check_step_access,
@@ -117,9 +117,9 @@ def main() -> None:
     cv_folds = st.number_input(
         "CV folds", min_value=2, max_value=max_folds, value=min(5, max_folds), disabled=not use_gridsearch)
 
-    if IS_CLOUD and use_gridsearch:
+    if project.runtime_mode == "demo" and use_gridsearch:
         st.caption(
-            f"⚠️ Modo cloud: máximo {max_folds} folds para evitar timeouts.")
+            f"⚠️ Modo demo: máximo {max_folds} folds para evitar timeouts.")
 
     grid_preset = "ligero"
     if use_gridsearch:
@@ -138,8 +138,10 @@ def main() -> None:
         scoring_map = {
             "Accuracy": "accuracy",
             "F1": "f1_weighted",
-            "ROC AUC": "roc_auc",
         }
+        target_series = df[project.target_column] if project.target_column else None
+        if target_series is not None and target_series.nunique(dropna=True) == 2:
+            scoring_map["ROC AUC"] = "roc_auc"
     scoring_label = st.selectbox(
         "Scoring", options=list(scoring_map.keys()), index=0)
     if learn:

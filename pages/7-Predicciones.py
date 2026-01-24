@@ -91,9 +91,9 @@ def main() -> None:
         return
 
     project = get_project()
-    
+
     learn = project.ui_mode == "learn"
-    
+
     st.title("Prediccion")
 
     if learn:
@@ -149,7 +149,6 @@ def main() -> None:
 
     st.dataframe(df.head(50), use_container_width=True)
 
-    
     has_target = st.checkbox(
         "El archivo posee el dato a predecir (target)",
         value=False,
@@ -268,6 +267,8 @@ def main() -> None:
                     title="Prediccion vs valor real",
                     xaxis_title="Real",
                     yaxis_title="Prediccion",
+                    xaxis=dict(tickformat=",.2f"),
+                    yaxis=dict(tickformat=",.2f"),
                 )
                 st.plotly_chart(fig, use_container_width=True)
             else:

@@ -170,7 +170,7 @@ def main() -> None:
                         project.problem_type or "classification", preset=grid_preset
                     ),
                     cv=int(cv_folds),
-                    scoring=scoring_label if use_gridsearch else None,
+                    scoring=scoring_map[scoring_label] if use_gridsearch else None,
                 )
         except Exception as exc:
             add_operation_log("train_models", str(exc), status="error")

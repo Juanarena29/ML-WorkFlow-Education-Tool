@@ -23,8 +23,20 @@ def _render_metrics(metrics: dict, problem_type: str) -> None:
         return
 
     df_metrics = build_metrics_table(metrics)
+
+    # Crear copia para formateo visual
+    df_display = df_metrics.copy()
+
+    # Formatear métricas de regresión para mejor legibilidad
+    if problem_type == "regression":
+        for col in ["mae", "rmse"]:
+            if col in df_display.columns:
+                df_display[col] = df_display[col].apply(lambda x: f"{x:,.2f}")
+        if "r2" in df_display.columns:
+            df_display["r2"] = df_display["r2"].apply(lambda x: f"{x:.4f}")
+
     st.subheader("Tabla comparativa")
-    st.dataframe(df_metrics, use_container_width=True)
+    st.dataframe(df_display, use_container_width=True)
 
     if problem_type == "regression":
         score_map = {
@@ -57,6 +69,12 @@ def _render_metrics(metrics: dict, problem_type: str) -> None:
         orientation="h",
         title=f"Comparacion por {metric_label}",
     )
+    # Formatear los valores en el gráfico
+    if problem_type == "regression" and metric_name in ["mae", "rmse"]:
+        fig.update_xaxes(tickformat=",.2f")
+    elif metric_name == "r2":
+        fig.update_xaxes(tickformat=".4f")
+
     st.plotly_chart(fig, use_container_width=True)
 
 
@@ -73,11 +91,17 @@ def _render_model_details(models: dict, metrics: dict, project, learn) -> None:
         with st.expander(model_name):
             st.write("Metricas")
             model_metrics = metrics.get(model_name, {})
-            st.json(model_metrics)
-
-            if project.best_params.get(model_name):
-                st.write("Mejores hiperparametros")
-                st.json(project.best_params[model_name])
+            formatted_metrics = {}
+            for key, value in model_metrics.items():
+                if key in ["mae", "rmse"]:
+                    formatted_metrics[key] = f"{value:,.2f}"
+                elif key in ["r2", "accuracy", "precision", "recall", "f1", "roc_auc"]:
+                    formatted_metrics[key] = f"{value:.4f}"
+                elif key == "train_time_sec":
+                    formatted_metrics[key] = f"{value:.4f}s"
+                else:
+                    formatted_metrics[key] = value
+            st.json(formatted_metrics)
 
             importances = extract_feature_importance(
                 model,
@@ -139,6 +163,8 @@ def _plot_residuals(y_true, y_pred) -> None:
         title="Residuos vs Prediccion",
         xaxis_title="Prediccion",
         yaxis_title="Residuo",
+        xaxis=dict(tickformat=",.2f"),
+        yaxis=dict(tickformat=",.2f"),
     )
     st.plotly_chart(fig, use_container_width=True)
 
@@ -230,15 +256,6 @@ def main() -> None:
             )
 
     st.subheader("Gráficos por modelo")
-
-    if learn and project.problem_type == "classification":
-        with st.expander("🧩 ¿Qué es la matriz de confusión y la curva ROC?"):
-            st.markdown(
-                "**Matriz de confusión**: muestra aciertos y errores por clase.\n"
-                "Ayuda a ver en qué casos el modelo se equivoca más.\n\n"
-                "**Curva ROC**: evalúa qué tan bien el modelo separa las clases usando probabilidades.\n"
-                "Es útil cuando importa distinguir positivos y negativos."
-            )
 
     # Reconstrucción del split con manejo de error más específico
     try:

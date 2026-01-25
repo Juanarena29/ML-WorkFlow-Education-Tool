@@ -42,8 +42,7 @@ def main() -> None:
         5. 🤖 Entrena los modelos que tú quieras
         6. 📈 Analiza resultados de los modelos
         7. 🎯 Predice nuevos datos con tus modelos
-        
-        👈 **Navega usando la barra lateral**
+
         """)
 
     if project.home_completed and learn:
@@ -96,6 +95,8 @@ def main() -> None:
         if st.button("EMPEZAR RECORRIDO"):
             st.switch_page("pages/1-Carga de Dataset.py")
         st.markdown("""
+        👈 **Navega usando la barra lateral**
+        
         Si deseas cambiar de modo, intenta recargando la página.
         """)
 

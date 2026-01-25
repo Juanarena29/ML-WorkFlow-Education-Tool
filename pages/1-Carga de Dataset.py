@@ -256,8 +256,12 @@ def main() -> None:
         if st.button("Siguiente: Detección de Tipos"):
             st.switch_page("pages/2-Deteccion de tipos.py")
 
+    st.divider()
+    st.markdown(
+        "🔍 **Ver el código fuente:** "
+        "[Repositorio en GitHub](https://github.com/Juanarena29/ML-WorkFlow-Education-Tool)"
+    )
 
-    st.write("Codigo: https://github.com/Juanarena29/ML-WorkFlow-Education-Tool")
 
 
 if __name__ == "__main__":

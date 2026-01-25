@@ -46,7 +46,7 @@ Por ejemplo:
 
 ### Filosofía
 
-> "La mejor forma de aprender ML es haciendo ML, pero entendiendo cada paso."
+> “Automatizar sin entender el proceso genera modelos frágiles; entender el proceso genera soluciones confiables.”
 
 No se trata de ejecutar código mágico y ver números. Se trata de **entender el proceso** para poder tomar mejores decisiones cuando trabajes con tus propios datos.
 

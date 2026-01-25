@@ -39,7 +39,7 @@ def main() -> None:
         2. 🔍 Confirma los tipos de datos
         3. ⚙️ Configura el tratamiento de datos
         4. 📊 Explora tus datos (EDA)
-        5. 🤖 Entrena los modelos que tú quieras
+        5. 🤖  Entrena los modelos que tú quieras
         6. 📈 Analiza resultados de los modelos
         7. 🎯 Predice nuevos datos con tus modelos
         👈 **Navega usando la barra lateral**

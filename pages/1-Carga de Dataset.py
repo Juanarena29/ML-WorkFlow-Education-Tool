@@ -257,5 +257,8 @@ def main() -> None:
             st.switch_page("pages/2-Deteccion de tipos.py")
 
 
+    st.write("Codigo: https://github.com/Juanarena29/ML-WorkFlow-Education-Tool")
+
+
 if __name__ == "__main__":
     main()

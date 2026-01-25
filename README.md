@@ -1,106 +1,107 @@
 # ML WorkFlow Education Tool
 
-Una aplicación web interactiva para entrenar modelos de Machine Learning **sin escribir código**.
+An interactive web application for training Machine Learning models **without writing code**.
 
-Diseñada tanto para **aprender los fundamentos de ML** como para **usar como herramienta práctica** de entrenamiento de modelos.
-
----
-
-## 🎯 ¿Qué es?
-
-ML WorkFlow es una aplicación construida con Streamlit que guía al usuario paso a paso a través del proceso completo de Machine Learning:
-
-1. **Cargar datos** → Subir un archivo CSV
-2. **Detectar tipos** → Identificar variables numéricas, categóricas y el target
-3. **Limpiar datos** → Imputar valores faltantes, eliminar duplicados
-4. **Explorar datos (EDA)** → Visualizar distribuciones, correlaciones y relaciones
-5. **Entrenar modelos** → Seleccionar y entrenar múltiples algoritmos
-6. **Analizar resultados** → Comparar métricas, ver matrices de confusión, curvas ROC
-7. **Predecir** → Usar los modelos entrenados con nuevos datos
+Designed both to **learn the fundamentals of Machine Learning** and to **use as a practical model training tool**.
 
 ---
 
-## 📘 Modo APRENDER (Learn Mode)
+## 🎯 What is it?
 
-El corazón de este proyecto es el **modo educativo**.
+ML Workflow is a Streamlit-based application that guides the user step by step through the complete Machine Learning workflow:
 
-### ¿Para quién es?
-
-- Estudiantes que recién empiezan con Machine Learning
-- Personas curiosas que quieren entender qué hay detrás de las predicciones
-- Cualquiera que prefiera aprender haciendo, no solo leyendo
-
-### ¿Qué hace diferente?
-
-En cada paso del proceso, el modo APRENDER incluye **explicaciones contextuales** que responden:
-
-- **¿Qué estoy viendo?** → Qué significan los datos, gráficos y métricas
-- **¿Por qué importa?** → Para qué sirve cada paso en el flujo de ML
-- **¿Qué decisiones estoy tomando?** → Qué implica elegir una opción u otra
-
-Por ejemplo:
-- Al cargar un dataset, explica qué es un dataset y qué tipos de datos existen
-- Al elegir el target, explica la diferencia entre regresión y clasificación
-- Al entrenar, explica qué significa train/test split y por qué se hace
-- Al ver resultados, explica cómo interpretar accuracy, precision, recall, etc.
-
-### Filosofía
-
-> “Automatizar sin entender el proceso genera modelos frágiles; entender el proceso genera soluciones confiables.”
-
-No se trata de ejecutar código mágico y ver números. Se trata de **entender el proceso** para poder tomar mejores decisiones cuando trabajes con tus propios datos.
+1. **Load data** → Upload a CSV file  
+2. **Detect types** → Identify numerical variables, categorical variables, and the target  
+3. **Clean data** → Impute missing values, remove duplicates  
+4. **Explore data (EDA)** → Visualize distributions, correlations, and relationships 
+5. **Train models** → Select and train multiple algorithms  
+6. **Analyze results** → Compare metrics, inspect confusion matrices, ROC curves  
+7. **Predict** → Use trained models on new data  
 
 ---
 
-## 🔧 Modo HERRAMIENTA (Tool Mode)
+## 📘 LEARN Mode
 
-Para usuarios que ya conocen el proceso y solo quieren una herramienta rápida para:
+The core of this project is its **educational mode**.
 
-- Probar distintos modelos con sus datos
-- Comparar algoritmos fácilmente
-- Exportar modelos entrenados
-- Generar predicciones
+### Who is it for?
 
-Sin explicaciones adicionales, flujo directo al resultado.
+- Students who are just starting with Machine Learning  
+- Curious learners who want to understand what is behind predictions  
+- Anyone who prefers learning by doing, not just reading  
+
+### What makes it different?
+
+At every step of the workflow, LEARN mode provides **contextual explanations** that answer:
+
+- **What am I looking at?** → What the data, charts, and metrics mean  
+- **Why does it matter?** → The purpose of each step in the ML workflow  
+- **What decisions am I making?** → The implications of choosing one option over another  
+
+For example:
+- When loading a dataset, it explains what a dataset is and the different data types  
+- When selecting the target, it explains the difference between regression and classification  
+- During training, it explains what a train/test split is and why it is used  
+- When reviewing results, it explains how to interpret accuracy, precision, recall, etc.  
+
+### Philosophy
+
+> **“The most costly errors in Machine Learning are not in the model, but in the steps before it.”**
+
+This is not about running magical code and looking at numbers.  
+It is about **understanding the process** in order to make better decisions when working with your own data.
 
 ---
 
-## 🚀 Instalación
+## 🔧 TOOL Mode
 
-### Requisitos
+For users who already understand the process and only want a fast, practical tool to:
+
+- Test different models on their own data  
+- Easily compare algorithms  
+- Export trained models  
+- Generate predictions  
+
+No additional explanations, a direct path to results.
+
+---
+
+## 🚀 Installation
+
+### Requirements
 - Python 3.10+
 
-### Pasos
+### Steps
 
 ```bash
-# Clonar el repositorio
+# Clone the repository
 git clone https://github.com/Juanarena29/ML-WorkFlow-Education-Tool.git
 cd ML-WorkFlow-Education-Tool
 
-# Crear entorno virtual
+# Create virtual environment
 python -m venv venv
 
-# Activar entorno (Windows)
+# Activate environment (Windows)
 .\venv\Scripts\Activate.ps1
 
-# Activar entorno (Linux/Mac)
+# Activate environment (Linux/Mac)
 source venv/bin/activate
 
-# Instalar dependencias
+# Install dependencies
 pip install -r requirements.txt
 
-# Ejecutar la aplicación
+# Run the application
 streamlit run HOME.py
 ```
 
 ---
 
-## 📂 Estructura del proyecto
+## 📂 Project structure
 
 ```
 ML-WorkFlow-Education-Tool/
-├── HOME.py                 # Página principal
-├── pages/                  # Páginas del flujo
+├── HOME.py                 # Main page
+├── pages/                  # Workflow pages
 │   ├── 1-LoadDataset.py
 │   ├── 2-TypesDetection.py
 │   ├── 3-CleaningConfig.py
@@ -108,29 +109,29 @@ ML-WorkFlow-Education-Tool/
 │   ├── 5-Training.py
 │   ├── 6-Results.py
 │   └── 7-Prediction.py
-├── src/                    # Lógica de negocio
-│   ├── data/               # Carga, análisis y limpieza
-│   ├── eda/                # Estadísticas y visualizaciones
-│   ├── ml/                 # Modelos, pipelines y evaluación
-│   └── utils/              # Sesión, constantes, file handling
-├── tests/                  # Tests unitarios (pytest)
-├── assets/                 # Estilos y datasets de ejemplo
-├── models/                 # Modelos exportados (.pkl)
-└── projectconfigs/         # Configuraciones guardadas
+├── src/                    # Business logic
+│   ├── data/               # Loading, analysis, and cleaning
+│   ├── eda/                # Statistics and visualizations
+│   ├── ml/                 # Models, pipelines, and evaluation
+│   └── utils/              # Session, constants, file handling
+├── tests/                  # Unit tests (pytest)
+├── assets/                 # Styling and example datasets
+├── models/                 # Exported models (.pkl)
+└── projectconfigs/         # Saved configurations
 ```
 
 ---
 
-## 🤖 Modelos disponibles
+## 🤖 Available models
 
-### Clasificación
+### Classification
 - Logistic Regression
 - Random Forest
 - Gradient Boosting
 - SVC (Support Vector Classifier)
 - XGBoost
 
-### Regresión
+### Regression
 - Linear Regression
 - Ridge
 - Lasso
@@ -138,67 +139,67 @@ ML-WorkFlow-Education-Tool/
 - Gradient Boosting
 - XGBoost
 
-Todos los modelos incluyen:
-- Preprocesamiento automático (imputación, escalado, encoding)
-- Opción de GridSearchCV para optimización de hiperparámetros
-- Métricas completas de evaluación
+All models include:
+- Automatic preprocessing (imputation, scaling, encoding)
+- Optional GridSearchCV for hyperparameter optimization
+- Complete evaluation metrics
 
 ---
 
-## 📊 Métricas y visualizaciones
+## 📊 Metrics and visualizations
 
-### Clasificación
+Classification
 - Accuracy, Precision, Recall, F1-Score
-- ROC AUC (para clasificación binaria)
-- Matriz de confusión (normal y normalizada)
-- Curva ROC
+- ROC AUC (binary classification)
+- Confusion matrix (raw and normalized)
+- ROC curve
 
-### Regresión
-- MAE (Error absoluto medio)
-- RMSE (Error cuadrático medio)
-- R² (Coeficiente de determinación)
-- Gráfico de residuos
+### Regression
+- MAE (Mean Absolute Error)
+- RMSE (Root Mean Squared Error)
+- R² (Coefficient of Determination)
+- Residuals plot
 
 ---
 
-## ☁️ Deploy en Streamlit Cloud
+## ☁️ Streamlit Cloud deployment
 
-La aplicación detecta automáticamente si está corriendo en Streamlit Cloud y aplica límites para evitar saturar recursos:
+The application automatically detects when it is running on Streamlit Cloud and applies limits to avoid resource saturation:
 
-- Máximo 20,000 filas
-- Máximo 100 columnas
-- Máximo 3 folds en GridSearchCV
+- Maximum 20,000 rows
+- Maximum 100 columns
+- Maximum 3 folds in GridSearchCV
 
-En modo local no hay límites.
+No limits are applied in local mode.
 
 ---
 
 ## 🧪 Tests
 
 ```bash
-# Ejecutar todos los tests
+# Run all tests
 pytest tests/ -v
 
-# Ejecutar con cobertura
+# Run tests with coverage
 pytest tests/ --cov=src
 ```
 
 ---
 
-## 🛠️ Stack tecnológico
+## 🛠️ Tech stack
 
 - **Frontend**: Streamlit
-- **ML**: scikit-learn, XGBoost
-- **Visualización**: Plotly
+- **Machine Learning**: scikit-learn, XGBoost
+- **Visualization**: Plotly
 - **Data**: Pandas, NumPy
 
 ---
 
-## 📝 Licencia
+## 📝 License
 
 MIT
 
 ---
 
 
-*Si este proyecto te resulta útil para aprender ML, ¡dale una ⭐ en GitHub!*
+*If this project helps you learn Machine Learning, consider giving it a ⭐ on GitHub!*

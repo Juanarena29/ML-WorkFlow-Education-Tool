@@ -62,10 +62,10 @@ def main() -> None:
         Si mirás **muchos ejemplos reales** de casas junto con su precio, empezás a notar **patrones**.  
         Por ejemplo: en general, las casas más grandes suelen ser más caras.
 
-        En *Machine Learning* usamos esos ejemplos del pasado para entrenar un **sistema que aprende patrones** y luego puede **estimar el precio de una casa nueva**, incluso si nunca la vio antes.
+        En *Machine Learning* usamos esos ejemplos del pasado para entrenar un **sistema que aprende patrones** y luego puede **clasificar una casa nueva** como cara o barata, incluso si nunca la vió antes.
 
         A este tipo de sistema lo llamamos **modelo predictivo**:  
-        una herramienta que aprende a partir de datos, cualquiera sea el índole, para hacer predicciones lo más cercanas posible a la realidad.
+        una herramienta que aprende a partir de datos para hacer predicciones lo más cercanas posible a la realidad.
 
         ---
 
@@ -74,7 +74,7 @@ def main() -> None:
         En este recorrido vas a construir ese proceso **paso a paso**, de forma guiada:
 
         1. Cargar un conjunto de datos  
-        2. Definir qué información es importante y cuál es el objetivo a predecir  
+        2. Definir el objetivo a predecir (target) y las variables de entradas (features)  
         3. Limpiar y preparar los datos  
         4. Analizar patrones y relaciones  
         5. Entrenar modelos predictivos  
@@ -83,8 +83,10 @@ def main() -> None:
         No necesitas saber Machine Learning de antemano:  
         la app te va a explicar **qué se hace, por qué se hace y qué decisiones estás tomando** en cada paso.
 
-        Usaremos un conjunto de datos precargado con el fin de entrenar un modelo que prediga si una **casa** es cara o barata, segun sus características.
-                    
+        Usaremos un dataset precargado para entrenar un modelo que prediga si una casa es **cara o barata** según sus características.
+
+        (En este ejemplo, “cara” significa que su precio estaba por encima de un umbral definido a partir del dataset.)
+        
         👉 **Cuando estés listo, podés comenzar el recorrido.**  
 
         """)

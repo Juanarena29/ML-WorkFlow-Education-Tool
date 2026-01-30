@@ -14,6 +14,7 @@ import streamlit as st
 
 from src.utils.constants import RUNTIME_MODE
 
+
 @dataclass
 class MLProject:
     """
@@ -227,6 +228,51 @@ class MLProject:
             'metadata': self.metadata
         }
 
+    def clear_derived_data(self) -> None:
+        """
+        Limpia todos los datos que dependen del dataset original.
+
+        Se usa cuando se carga un nuevo dataset para reemplazar uno existente.
+
+        Mantiene:
+        - df_original (se reemplazará después)
+        - metadata (nombre del proyecto, fechas)
+        - ui_mode y runtime_mode
+        - home_completed
+
+        Limpia:
+        - Todos los datos procesados
+        - Modelos entrenados
+        - Configuraciones de limpieza y entrenamiento
+        - Tipos de columnas y target
+        """
+        self.df_limpio = None
+        self.column_types = {}
+        self.target_column = None
+        self.problem_type = None
+        self.cleaning_config = {}
+        self.trained_models = {}
+        self.preprocessing_pipeline = None
+        self.train_test_split_config = {
+            'test_size': 0.2,
+            'random_state': 22,
+            'stratify': True
+        }
+        self.metrics = {}
+        self.best_params = {}
+        self.target_label_encoder = None
+        self.validation_errors = []
+
+        # Resetear confirmaciones en session_state
+        if 'confirmations' in st.session_state:
+            st.session_state.confirmations = {
+                'types_confirmed': False,
+                'cleaning_confirmed': False,
+                'training_started': False
+            }
+
+        self.update_metadata()
+
 
 def initialize_session() -> None:
     """
@@ -257,40 +303,6 @@ def initialize_session() -> None:
         st.session_state.problem_type_override = None
     if 'operation_logs' not in st.session_state:
         st.session_state.operation_logs = []
-
-
-def reset_project(keep_metadata: bool = False) -> None:
-    """
-    Reinicia el proyecto actual creando una nueva instancia de MLProject.
-
-    Args:
-        keep_metadata: Si es True, conserva el nombre del proyecto anterior.
-    """
-    old_metadata = None
-    old_ui_mode = None
-    old_home_completed = None
-    if keep_metadata and 'project' in st.session_state:
-        old_metadata = st.session_state.project.metadata.copy()
-        old_ui_mode = st.session_state.project.ui_mode
-        old_home_completed = st.session_state.project.home_completed
-
-    st.session_state.project = MLProject(runtime_mode=RUNTIME_MODE)
-    if old_metadata:
-        st.session_state.project.metadata['project_name'] = old_metadata.get(
-            'project_name', 'Untitled Project')
-    if old_ui_mode:
-        st.session_state.project.ui_mode = old_ui_mode
-    if old_home_completed is not None:
-        st.session_state.project.home_completed = old_home_completed
-
-    st.session_state.confirmations = {
-        'types_confirmed': False,
-        'cleaning_confirmed': False,
-        'training_started': False
-    }
-    st.session_state.problem_type_override = None
-
-    st.session_state.operation_logs = []
 
 
 def add_operation_log(operation: str, details: str, status: str = 'success') -> None:

@@ -4,12 +4,11 @@ Constantes compartidas del proyecto.
 
 import os
 
-# =============================================================================
 # RUNTIME MODE
-# =============================================================================
+
 # Detecta si estamos en Streamlit Cloud o en local.
 # En Streamlit Cloud, la variable de entorno STREAMLIT_RUNTIME existe.
-# También puedes forzar el modo con RUNTIME_MODE=demo o RUNTIME_MODE=full.
+# También se puede forzar el modo con RUNTIME_MODE=demo o RUNTIME_MODE=full.
 
 _runtime_env = os.getenv("RUNTIME_MODE", "").lower()
 if _runtime_env in ("cloud", "demo"):
@@ -23,16 +22,12 @@ else:
 IS_DEMO = RUNTIME_MODE == "demo"
 IS_CLOUD = IS_DEMO
 
-# =============================================================================
 # LÍMITES PARA MODO CLOUD
-# =============================================================================
 CLOUD_MAX_ROWS = 20000
 CLOUD_MAX_COLUMNS = 100
 CLOUD_MAX_CV_FOLDS = 3
 
-# =============================================================================
 # TIPOS DE COLUMNAS
-# =============================================================================
 COLUMN_TYPES = ["numeric", "categorical", "datetime", "id", "text"]
 
 IMPUTATION_METHODS_NUMERIC = {
@@ -50,10 +45,9 @@ IMPUTATION_METHODS_CATEGORICAL = {
     "Valor constante": "constant",
 }
 
-
-# =============================================================================
 # FUNCIONES AUXILIARES DE RUNTIME
-# =============================================================================
+
+
 def get_max_rows() -> int:
     """Devuelve el máximo de filas permitido según el runtime mode."""
     return CLOUD_MAX_ROWS if IS_DEMO else float("inf")

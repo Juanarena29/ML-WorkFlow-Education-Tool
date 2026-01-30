@@ -177,7 +177,4 @@ def load_and_validate(uploaded_file: Any, min_rows: int = 10,
     """
     df = load_dataset(uploaded_file, **read_csv_kwargs)
     errors = validate_dataset(df, min_rows=min_rows)
-    info: Dict[str, Any] = {}
-    if not errors:
-        info = get_basic_info(df)
-    return df, info, errors
+    return df, errors

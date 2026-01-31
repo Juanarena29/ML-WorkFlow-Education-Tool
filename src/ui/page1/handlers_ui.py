@@ -20,9 +20,6 @@ from src.ui.page1.render_dataset_info_ui import (
     render_basic_info,
     render_dtypes_table
 )
-from src.ui.page1.dataset_upload_ui import (
-    render_next_step_button
-)
 from src.ui.learn_explanations import (
     render_learn_one_empty_columns_warning_explanation
 )
@@ -47,23 +44,6 @@ def handle_auto_load_sample_dataset(project: MLProject) -> bool:
 
     st.warning("No se encontró el dataset de ejemplo DatosEDUCATOR.csv.")
     return False
-
-
-def handle_existing_dataset_display(project: MLProject) -> None:
-    st.info("Ya hay un dataset cargado. Puedes subir otro para reemplazarlo.")
-    df_loaded = project.df_original
-    info_loaded = get_basic_info(df_loaded)
-
-    render_basic_info(info_loaded)
-
-    st.subheader("Tipos detectados")
-    render_dtypes_table(info_loaded["dtypes"])
-
-    st.subheader("Vista previa del dataset")
-    st.write(
-        "Una vista previa del dataset ayuda a comprender su estructura y el tipo de datos disponibles."
-    )
-    st.dataframe(df_loaded.head(50), use_container_width=True)
 
 
 def handle_file_upload_and_validation(

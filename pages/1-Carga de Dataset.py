@@ -16,7 +16,6 @@ from src.data.loader import (get_basic_info)
 from src.ui.page1.handlers_ui import (
     handle_auto_load_sample_dataset,
     handle_empty_columns_removal,
-    handle_existing_dataset_display,
     handle_file_upload_and_validation,
     confirm_and_save_dataset
 )
@@ -49,7 +48,9 @@ def main() -> None:
 
     # Caso: no subió nada pero ya existe un dataset cargado en sesión/proyecto
     if uploaded_file is None and project.df_original is not None:
-        handle_existing_dataset_display(project)
+        st.info("Ya hay un dataset cargado. Puedes subir otro para reemplazarlo.")
+        info = get_basic_info(project.df_original)
+        render_dataset_preview(project.df_original, info, learn)
         render_next_step_button(
             "Siguiente: Detección de Tipos",
             "pages/2-Deteccion de tipos.py",

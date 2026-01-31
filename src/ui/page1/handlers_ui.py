@@ -12,13 +12,8 @@ from src.utils.session import (
 )
 from src.data.loader import (
     get_all_nan_columns,
-    get_basic_info,
     load_and_validate,
     truncate_dataset_if_needed,
-)
-from src.ui.page1.render_dataset_info_ui import (
-    render_basic_info,
-    render_dtypes_table
 )
 from src.ui.learn_explanations import (
     render_learn_one_empty_columns_warning_explanation

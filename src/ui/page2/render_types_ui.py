@@ -101,7 +101,3 @@ def render_problem_type_selector() -> None:
         help="Si eliges una opcion manual, se usara en la deteccion de tipos.",
     )
     st.session_state.problem_type_override = options[selected_label]
-    if st.session_state.problem_type_override:
-        st.info(
-            f"Preferencia guardada: {st.session_state.problem_type_override}."
-        )

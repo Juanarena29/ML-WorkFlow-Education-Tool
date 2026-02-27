@@ -93,11 +93,39 @@ def handle_empty_columns_removal(df: pd.DataFrame, learn: bool) -> pd.DataFrame:
     return df
 
 
+def _is_same_dataset(df: pd.DataFrame, existing: pd.DataFrame) -> bool:
+    """Compara rápido si el df subido es el mismo que el ya cargado."""
+    if df.shape != existing.shape:
+        return False
+    if list(df.columns) != list(existing.columns):
+        return False
+    return df.equals(existing)
+
+
 def confirm_and_save_dataset(df: pd.DataFrame, project: MLProject, info: dict) -> bool:
-    # Si ya está cargado, no mostrar el botón de confirmar
     if project.is_step_completed("load"):
-        st.success("✅ Dataset ya cargado y guardado en el proyecto.")
-        return True
+        # Si el dataset subido es el mismo que el ya guardado, no hacer nada
+        if _is_same_dataset(df, project.df_original):
+            st.success("✅ Dataset ya cargado y guardado en el proyecto.")
+            return True
+
+        # Dataset nuevo detectado: ofrecer reemplazo
+        st.warning(
+            "⚠️ Se detectó un dataset diferente al que ya estaba cargado. "
+            "Si lo reemplazás, se reiniciarán los pasos posteriores "
+            "(tipos, limpieza, entrenamiento, etc.)."
+        )
+        if not st.button("Reemplazar dataset"):
+            return False
+
+        apply_loaded_dataset(project, df)
+        add_operation_log(
+            "load_dataset",
+            f"Dataset reemplazado: {info['rows']} filas y {info['columns']} columnas.",
+            status="success",
+        )
+        st.success("✅ Dataset reemplazado y guardado en el proyecto.")
+        st.rerun()
 
     if not st.button("Confirmar carga"):
         return False

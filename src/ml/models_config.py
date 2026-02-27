@@ -155,3 +155,34 @@ def get_param_grids(problem_type: str, preset: str = "ligero") -> Dict[str, Dict
     if preset == "completo":
         return grids_full
     return grids_light
+
+
+def get_scoring_options(
+    problem_type: str,
+    target_nunique: int = 0,
+) -> Dict[str, str]:
+    """
+    Devuelve un diccionario {label_visible: scoring_sklearn}
+    segun el tipo de problema y las caracteristicas del target.
+
+    Args:
+        problem_type: 'regression' o 'classification'.
+        target_nunique: Cantidad de clases unicas del target.
+
+    Returns:
+        Diccionario ordenado label -> scoring string.
+    """
+    if problem_type == "regression":
+        return {
+            "R²": "r2",
+            "MAE": "neg_mean_absolute_error",
+            "RMSE": "neg_root_mean_squared_error",
+        }
+
+    scoring: Dict[str, str] = {
+        "Accuracy": "accuracy",
+        "F1": "f1_weighted",
+    }
+    if target_nunique == 2:
+        scoring["ROC AUC"] = "roc_auc"
+    return scoring

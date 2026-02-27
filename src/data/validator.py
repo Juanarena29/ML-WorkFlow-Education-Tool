@@ -3,7 +3,7 @@ Validaciones del dataset y del target
 """
 
 from __future__ import annotations
-from typing import List, Optional
+from typing import List, Optional, Tuple
 import pandas as pd
 
 
@@ -71,3 +71,48 @@ def validate_target(df: pd.DataFrame, target_column: str, problem_type: Optional
             )
 
     return errors
+
+
+# ---------------------------------------------------------------------------
+# Validacion de columnas para prediccion
+# ---------------------------------------------------------------------------
+
+
+def validate_prediction_columns(
+    df: pd.DataFrame,
+    feature_cols: List[str],
+    target_column: Optional[str] = None,
+    has_target: bool = False,
+) -> Tuple[List[str], Optional[pd.Series], pd.DataFrame]:
+    """Valida un DataFrame de prediccion y separa target si corresponde.
+
+    Args:
+        df: DataFrame subido por el usuario.
+        feature_cols: columnas features esperadas por el modelo.
+        target_column: nombre de la columna target (puede ser None).
+        has_target: si el usuario indico que el CSV incluye el target.
+
+    Returns:
+        (errores, y_true_o_None, df_solo_features)
+    """
+    errors: List[str] = []
+    y_true: Optional[pd.Series] = None
+    df_out = df
+
+    if has_target:
+        if not target_column:
+            errors.append("No hay columna target definida en el proyecto.")
+            return errors, y_true, df_out
+        if target_column not in df_out.columns:
+            errors.append(
+                f"El CSV no contiene la columna target '{target_column}'."
+            )
+            return errors, y_true, df_out
+        y_true = df_out[target_column]
+        df_out = df_out.drop(columns=[target_column])  # returns new df
+
+    missing = [col for col in feature_cols if col not in df_out.columns]
+    if missing:
+        errors.append(f"Faltan columnas requeridas: {', '.join(missing)}")
+
+    return errors, y_true, df_out

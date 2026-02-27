@@ -343,16 +343,6 @@ def get_project() -> MLProject:
     return st.session_state.project
 
 
-def get_uimode(self) -> None:
-    """retorna el modo de uso (interfaz)"""
-    return self["ui_mode"]
-
-
-def get_rtmode(self) -> None:
-    """retorna el modo de uso (runtime)"""
-    return self["runtime_mode"]
-
-
 def check_step_access(required_step: str, show_error: bool = True) -> bool:
     """
     Verifica si el usuario puede acceder a un paso del flujo.

@@ -98,21 +98,31 @@ def train_models(
             estimator, numeric_features, categorical_features)
         start = time.perf_counter()
 
-        if use_gridsearch and param_grids and name in param_grids:
-            grid = GridSearchCV(
-                estimator=pipeline,
-                param_grid=param_grids[name],
-                cv=cv,
-                scoring=scoring,
-                n_jobs=n_jobs,
-                refit=True,
-            )
-            grid.fit(X_train, y_train)
-            fitted_pipeline = grid.best_estimator_
-            best_params[name] = grid.best_params_
-        else:
-            fitted_pipeline = pipeline.fit(X_train, y_train)
-            best_params[name] = {}
+        try:
+            if use_gridsearch and param_grids and name in param_grids:
+                grid = GridSearchCV(
+                    estimator=pipeline,
+                    param_grid=param_grids[name],
+                    cv=cv,
+                    scoring=scoring,
+                    n_jobs=n_jobs,
+                    refit=True,
+                )
+                grid.fit(X_train, y_train)
+                fitted_pipeline = grid.best_estimator_
+                best_params[name] = grid.best_params_
+            else:
+                fitted_pipeline = pipeline.fit(X_train, y_train)
+                best_params[name] = {}
+        except MemoryError as mem_exc:
+            raise MemoryError(
+                f"Memoria insuficiente al entrenar '{name}'. "
+                "Intenta reducir el dataset o usar un modelo mas simple."
+            ) from mem_exc
+        except ValueError as exc:
+            raise ValueError(
+                f"Error de datos al entrenar '{name}': {exc}"
+            ) from exc
 
         elapsed = time.perf_counter() - start
 
@@ -167,7 +177,7 @@ def _evaluate_classification(y_true, y_pred, pipeline, X_test) -> Dict[str, floa
                 if proba.ndim == 2:
                     proba = proba[:, 1]
                 metrics["roc_auc"] = roc_auc_score(y_true, proba)
-            except Exception:
+            except (ValueError, TypeError):
                 pass
 
     return metrics

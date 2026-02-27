@@ -4,10 +4,12 @@ Funciones de evaluacion y preparacion de datos para resultados.
 
 from __future__ import annotations
 
-from typing import Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 from sklearn.metrics import confusion_matrix, roc_curve, auc
 from sklearn.model_selection import train_test_split
 
@@ -159,3 +161,235 @@ def extract_feature_importance(
     df = pd.DataFrame({"feature": feature_names, "importance": importances})
     df = df.sort_values("importance", ascending=False).reset_index(drop=True)
     return df
+
+
+# ---------------------------------------------------------------------------
+# Funciones de formateo de metricas
+# ---------------------------------------------------------------------------
+
+
+def format_metric_value(key: str, value: Any) -> str:
+    """Formatea un valor de metrica para visualizacion."""
+    if key in ("mae", "rmse"):
+        return f"{value:,.2f}"
+    if key in ("r2", "accuracy", "precision", "recall", "f1", "roc_auc"):
+        return f"{value:.4f}"
+    if key == "train_time_sec":
+        return f"{value:.4f}s"
+    return str(value)
+
+
+def format_metrics_table(
+    df_metrics: pd.DataFrame,
+    problem_type: str,
+) -> pd.DataFrame:
+    """Devuelve una copia del DataFrame de metricas con formato legible."""
+    df_display = df_metrics.copy()
+    if problem_type == "regression":
+        for col in ("mae", "rmse"):
+            if col in df_display.columns:
+                df_display[col] = df_display[col].apply(
+                    lambda x: f"{x:,.2f}")
+        if "r2" in df_display.columns:
+            df_display["r2"] = df_display["r2"].apply(lambda x: f"{x:.4f}")
+    return df_display
+
+
+# ---------------------------------------------------------------------------
+# Mapas de scoring para UI
+# ---------------------------------------------------------------------------
+
+
+def get_results_score_map(problem_type: str) -> Dict[str, str]:
+    """Devuelve {label_visible: nombre_columna} para el selector de metricas."""
+    if problem_type == "regression":
+        return {
+            "MAE – Error absoluto medio": "mae",
+            "RMSE – Error cuadrático medio": "rmse",
+            "R² – Capacidad explicativa": "r2",
+        }
+    return {
+        "Accuracy – Exactitud": "accuracy",
+        "Precision – Confiabilidad de positivos": "precision",
+        "Recall – Cobertura de positivos": "recall",
+        "F1 Score – Balance Precision/Recall": "f1",
+        "ROC AUC – Probabilidades": "roc_auc",
+    }
+
+
+# ---------------------------------------------------------------------------
+# Funciones generadoras de figuras Plotly
+# ---------------------------------------------------------------------------
+
+
+def metrics_comparison_fig(
+    df_metrics: pd.DataFrame,
+    metric_name: str,
+    metric_label: str,
+    problem_type: str,
+) -> go.Figure:
+    """Genera un bar chart horizontal comparando modelos por una metrica."""
+    fig = px.bar(
+        df_metrics.sort_values(metric_name, ascending=False),
+        x=metric_name,
+        y="modelo",
+        orientation="h",
+        title=f"Comparacion por {metric_label}",
+    )
+    if problem_type == "regression" and metric_name in ("mae", "rmse"):
+        fig.update_xaxes(tickformat=",.2f")
+    elif metric_name == "r2":
+        fig.update_xaxes(tickformat=".4f")
+    return fig
+
+
+def confusion_matrix_fig(
+    y_true: pd.Series,
+    y_pred: pd.Series,
+) -> go.Figure:
+    """Genera una heatmap de la matriz de confusion."""
+    cm, labels = compute_confusion_matrix(y_true, y_pred)
+    return px.imshow(
+        cm,
+        x=labels,
+        y=labels,
+        text_auto=True,
+        labels={"x": "Predicho", "y": "Real"},
+        title="Matriz de confusion",
+    )
+
+
+def confusion_matrix_normalized_fig(
+    y_true: pd.Series,
+    y_pred: pd.Series,
+) -> go.Figure:
+    """Genera una heatmap de la matriz de confusion normalizada."""
+    cm, labels = compute_confusion_matrix_normalized(y_true, y_pred)
+    return px.imshow(
+        cm,
+        x=labels,
+        y=labels,
+        text_auto=".2f",
+        labels={"x": "Predicho", "y": "Real"},
+        title="Matriz de confusion (normalizada)",
+    )
+
+
+def roc_curve_fig(
+    y_true: pd.Series,
+    y_score: Any,
+) -> go.Figure:
+    """Genera la curva ROC a partir de scores ya calculados."""
+    fpr, tpr, roc_auc = compute_roc_curve(y_true, y_score)
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(x=fpr, y=tpr, mode="lines", name=f"AUC={roc_auc:.3f}")
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=[0, 1], y=[0, 1], mode="lines",
+            name="Base", line=dict(dash="dash"),
+        )
+    )
+    fig.update_layout(
+        title="Curva ROC",
+        xaxis_title="False Positive Rate",
+        yaxis_title="True Positive Rate",
+    )
+    return fig
+
+
+def residuals_fig(
+    y_true: pd.Series,
+    y_pred: Any,
+) -> go.Figure:
+    """Genera el grafico de residuos vs prediccion."""
+    residuals = compute_residuals(
+        y_true, pd.Series(y_pred, index=y_true.index))
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=y_pred, y=residuals, mode="markers"))
+    fig.update_layout(
+        title="Residuos vs Prediccion",
+        xaxis_title="Prediccion",
+        yaxis_title="Residuo",
+        xaxis=dict(tickformat=",.2f"),
+        yaxis=dict(tickformat=",.2f"),
+    )
+    return fig
+
+
+def feature_importance_fig(
+    importances_df: pd.DataFrame,
+    top_n: int = 20,
+) -> go.Figure:
+    """Genera un bar chart horizontal con las top N features mas importantes."""
+    top = importances_df.head(top_n)
+    return px.bar(
+        top.sort_values("importance", ascending=True),
+        x="importance",
+        y="feature",
+        orientation="h",
+        title=f"Feature importance (top {top_n})",
+    )
+
+
+def get_roc_scores(
+    pipeline: Any,
+    X_test: pd.DataFrame,
+) -> Optional[Any]:
+    """Extrae scores para ROC del pipeline (predict_proba o decision_function).
+    Retorna None si el modelo no lo soporta."""
+    if hasattr(pipeline, "predict_proba"):
+        return pipeline.predict_proba(X_test)[:, 1]
+    if hasattr(pipeline, "decision_function"):
+        return pipeline.decision_function(X_test)
+    return None
+
+
+def decode_predictions(
+    y_test: pd.Series,
+    y_pred: Any,
+    target_encoder: Any,
+) -> Tuple[pd.Series, Any, Optional[pd.Series]]:
+    """Alinea y_test y y_pred al mismo espacio de labels cuando hay encoder.
+
+    Returns:
+        (y_test_plot, y_pred_decoded, y_test_numeric_for_roc)
+        y_test_numeric_for_roc es None si no se pudo transformar.
+    """
+    y_test_plot = y_test
+    y_test_roc: Optional[pd.Series] = None
+
+    if target_encoder is None:
+        return y_test_plot, y_pred, y_test_roc
+
+    y_pred_is_num = pd.api.types.is_numeric_dtype(pd.Series(y_pred))
+    y_test_is_num = pd.api.types.is_numeric_dtype(y_test_plot)
+
+    if y_pred_is_num and not y_test_is_num:
+        try:
+            y_pred = target_encoder.inverse_transform(
+                pd.Series(y_pred).astype(int)
+            )
+        except (ValueError, TypeError):
+            try:
+                y_test_plot = pd.Series(
+                    target_encoder.transform(y_test_plot),
+                    index=y_test_plot.index,
+                )
+            except (ValueError, TypeError):
+                pass
+
+    # Preparar versión numérica para ROC
+    if not pd.api.types.is_numeric_dtype(y_test_plot):
+        try:
+            y_test_roc = pd.Series(
+                target_encoder.transform(y_test_plot),
+                index=y_test_plot.index,
+            )
+        except (ValueError, TypeError):
+            y_test_roc = None
+    else:
+        y_test_roc = y_test_plot
+
+    return y_test_plot, y_pred, y_test_roc

@@ -105,10 +105,12 @@ def _render_classification_charts(
 
     st.plotly_chart(
         confusion_matrix_fig(y_test_plot, y_pred), use_container_width=True,
+        key=f"cm_{model_name}",
     )
     st.plotly_chart(
         confusion_matrix_normalized_fig(y_test_plot, y_pred),
         use_container_width=True,
+        key=f"cm_norm_{model_name}",
     )
 
     # ROC: requiere target numerico y modelo con probabilidades
@@ -125,7 +127,7 @@ def _render_classification_charts(
 
     try:
         fig = roc_curve_fig(y_test_roc, y_score)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key=f"roc_{model_name}")
     except (ValueError, TypeError) as exc:
         st.info(f"No se pudo generar la curva ROC para {model_name}: {exc}")
 
@@ -138,6 +140,7 @@ def _render_classification_charts(
 def _render_regression_charts(
     y_test: pd.Series,
     y_pred: Any,
+    model_name: str,
     learn: bool,
 ) -> None:
     """Renderiza grafico de residuos para un modelo de regresion."""
@@ -145,7 +148,7 @@ def _render_regression_charts(
         render_learn_six_residuals_explanation()
 
     fig = residuals_fig(y_test, y_pred)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key=f"resid_{model_name}")
 
 
 # ---------------------------------------------------------------------------
@@ -198,7 +201,7 @@ def render_model_charts(
                     pipeline, X_test, model_name, learn,
                 )
             else:
-                _render_regression_charts(y_test, y_pred, learn)
+                _render_regression_charts(y_test, y_pred, model_name, learn)
 
 
 # ---------------------------------------------------------------------------
@@ -238,7 +241,10 @@ def render_model_details(
                 if learn:
                     render_learn_six_feature_explanation()
                 fig = feature_importance_fig(importances)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(
+                    fig, use_container_width=True,
+                    key=f"feat_imp_{model_name}",
+                )
 
 
 # ---------------------------------------------------------------------------
